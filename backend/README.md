@@ -1,3 +1,5 @@
+# gobarber backend
+
 # Available Scripts
 
 ### `yarn start`
@@ -5,7 +7,7 @@
 Runs the app in the development mode.<br />
 Open [http://localhost:3333](http://localhost:3333) to view it in the browser.
 
-# Used technologies (backend):
+# Used technologies:
 
 Docker to containerization
 

@@ -1,4 +1,24 @@
+# gobarber frontend
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+
+# Used technologies:
+
+Docker to containerization
+
+* Dependecies:
+  - date-fns
+  - axios
+  - redux
+  - redux-saga
+  - styled-components
+  - react-app-rewired
+  - polished
+  - @rocketseat/unform
+
+* Development Dependecies:
+  - EsLint, Prettier (code pattern)
+  - Reactotron
 
 ## Available Scripts
 
