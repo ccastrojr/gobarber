@@ -1,8 +1,7 @@
-import { all, takeLatest, call, put } from 'redux-saga/effects';
-import { toast } from 'react-toastify';
+import { Alert } from 'react-native';
+import { all, takeLatest, call, put, delay } from 'redux-saga/effects';
 
 import api from '~/services/api';
-import history from '~/services/history';
 
 import { signInSuccess, signFailure } from './actions';
 
@@ -25,19 +24,27 @@ export function* signIn({ payload }) {
 
     const { token, user } = response.data;
 
-    if (!user.provider) {
-      toast.error('Você não é um prestador de serviço.');
+    if (user.provider) {
+      Alert.alert(
+        'Erro no login',
+        'O usuário não pode ser prestador de serviços.'
+      );
       yield put(signFailure());
       return;
     }
 
     api.defaults.headers.Authorization = `Bearer ${token}`;
 
+    yield delay(500);
+
     yield put(signInSuccess(token, user));
 
-    history.push('/dashboard');
+    // history.push('/dashboard');
   } catch (err) {
-    toast.error('Falha na autenticação.');
+    Alert.alert(
+      'Falha na autenticação.',
+      'Erro no login, verifique seus dados.'
+    );
     yield put(signFailure());
   }
 }
@@ -46,30 +53,25 @@ export function* signUp({ payload }) {
   try {
     const { name, email, password } = payload;
 
-    const response = yield call(api.post, '/users', {
+    yield call(api.post, '/users', {
       name,
       email,
       password,
-      provider: true,
     });
 
-    toast.success(`Bem-vindo ao GoBarber, ${response.data.name}!`);
-
-    history.push('/');
+    // history.push('/');
   } catch (err) {
-    toast.error('Erro ao se cadastrar. Verifique seus dados.');
+    Alert.alert(
+      'Falha no cadastro.',
+      'Erro ao se cadastrar, verifique seus dados.'
+    );
 
     yield put(signFailure());
   }
-}
-
-export function signOut() {
-  history.push('/');
 }
 
 export default all([
   takeLatest('persist/REHYDRATE', setToken),
   takeLatest('@auth/SIGN_IN_REQUEST', signIn),
   takeLatest('@auth/SIGN_UP_REQUEST', signUp),
-  takeLatest('@auth/SIGN_OUT', signOut),
 ]);

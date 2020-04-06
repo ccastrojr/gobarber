@@ -16,7 +16,7 @@ class ProviderController {
       });
 
       if (providers) {
-         return res.status(201).json({ providers });
+         return res.status(200).json({ providers });
       }
 
       return res
